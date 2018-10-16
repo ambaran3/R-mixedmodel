@@ -14,9 +14,16 @@ sum_per_instance_mat<-as.matrix(colSums(v_genes))
 n_subs_instance_mat<-as.matrix(colSums(v_genes != 0))
 
 data_in<-v_data
+options(warn=1)
 for (ind in 5:length(data_in)){
-  fit_tr = glmer(cbind(data_in[,ind], sum_productive_contigs-data_in[,ind]) ~ female+CD31pos+PT + (1|participantID), 
+  print(ind)
+  if (ind==53){
+  fit_tr = glmer(cbind(data_in[,ind], sum_productive_contigs-data_in[,ind]) ~ female+CD31pos+PT + (1|participantID), nAGQ=0,
                  family = 'binomial', data = data_in)
+  } else {
+    fit_tr = glmer(cbind(data_in[,ind], sum_productive_contigs-data_in[,ind]) ~ female+CD31pos+PT + (1|participantID), 
+                   family = 'binomial', data = data_in)
+}
   tidy_mat<-tidy(fit_tr)
   if (ind>5) {
     
@@ -41,6 +48,7 @@ n_subs_instance_mat<-rbind(n_subs_instance_mat, n_subs_instance_d)
 
 data_in<-d_data
 for (ind in 5:length(data_in)){
+  print(ind)
   fit_tr = glmer(cbind(data_in[,ind], sum_productive_contigs-data_in[,ind]) ~ female+CD31pos+PT + (1|participantID), 
                  family = 'binomial', data = data_in)
   tidy_mat<-tidy(fit_tr)
@@ -62,6 +70,7 @@ n_subs_instance_mat<-rbind(n_subs_instance_mat, n_subs_instance_j)
 
 data_in<-j_data
 for (ind in 5:length(data_in)){
+  print(ind)
   fit_tr = glmer(cbind(data_in[,ind], sum_productive_contigs-data_in[,ind]) ~ female+CD31pos+PT + (1|participantID), 
                  family = 'binomial', data = data_in)
   tidy_mat<-tidy(fit_tr)
